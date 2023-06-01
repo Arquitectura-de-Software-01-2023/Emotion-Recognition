@@ -1,0 +1,15 @@
+{
+  "name": "emotion_recognition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handlerl.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parse-multipart": "^1.0.4",
+    "uuidv4": "^6.2.13"
+  }
+}

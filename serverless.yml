@@ -1,0 +1,104 @@
+service: emotion-recognition
+
+provider:
+  name: aws
+  stage: dev
+  region: us-west-1
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "s3:*"
+          Resource: 
+            - "arn:aws:s3:::ucb-sis-image-bucket/*"
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:*"
+          Resource:
+            - "Fn::GetAtt": [EmotionRecognitionTable, Arn]
+  apiGateway:
+    binaryMediaTypes:
+      - 'multipart/form-data'
+    apiKeys:
+      - emotion-recognition-api-key
+  ecr:
+    images:
+      appimage:
+        path: ./
+
+functions:
+  uploader:
+    runtime: nodejs16.x
+    handler: js-handler.imageUploadHandler
+    events:
+      - http:
+          path: /image
+          method: post
+          private: true
+    environment:
+      BUCKET: ucb-sis-image-bucket
+      
+  emotion-get:
+    runtime: python3.8
+    handler: py-handler.get_emotion_handler
+    events:
+      - http:
+          path: /emotion
+          method: get
+          private: true
+    environment:
+      TABLE_NAME: emotion_recognition_records
+
+  emotion-delete:
+    runtime: python3.8
+    handler: py-handler.delete_emotion_handler
+    events:
+      - http:
+          path: /emotion
+          method: delete
+          private: true
+    environment:
+      TABLE_NAME: emotion_recognition_records
+
+  emotion:
+    image:
+      name: appimage
+      command:
+        - app.emotion_recognition_handler
+      entryPoint:
+        - "/lambda-entrypoint.sh"
+    timeout: 30
+    memorySize: 3008
+    events:
+      - http:
+          path: /emotion
+          method: post
+          private: true
+    environment:
+      TABLE_NAME: emotion_recognition_records
+
+resources:
+  Resources:
+    MyBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ucb-sis-image-bucket
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
+    EmotionRecognitionTable:
+        Type: AWS::DynamoDB::Table
+        Properties:
+          TableName: emotion_recognition_records
+          AttributeDefinitions:
+            - AttributeName: id
+              AttributeType: S
+          KeySchema:
+            - AttributeName: id
+              KeyType: HASH
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5     
