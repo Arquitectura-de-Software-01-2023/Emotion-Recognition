@@ -1,9 +1,15 @@
 service: emotion-recognition
 
+custom:
+  variables:
+    AWS_REGION: us-west-1
+    BUCKET_NAME: ucb-sis-image-bucket
+    TABLE_NAME: emotion_recognition_records
+
 provider:
   name: aws
   stage: dev
-  region: us-west-1
+  region: ${self:custom.variables.AWS_REGION}
   iam:
     role:
       statements:
@@ -11,7 +17,7 @@ provider:
           Action:
             - "s3:*"
           Resource: 
-            - "arn:aws:s3:::ucb-sis-image-bucket/*"
+            - "arn:aws:s3:::${self:custom.variables.BUCKET_NAME}/*"
         - Effect: "Allow"
           Action:
             - "dynamodb:*"
@@ -37,7 +43,7 @@ functions:
           method: post
           private: true
     environment:
-      BUCKET: ucb-sis-image-bucket
+      BUCKET: ${self:custom.variables.BUCKET_NAME}
       
   emotion-get:
     runtime: python3.8
@@ -48,7 +54,7 @@ functions:
           method: get
           private: true
     environment:
-      TABLE_NAME: emotion_recognition_records
+      TABLE_NAME: ${self:custom.variables.TABLE_NAME}
 
   emotion-delete:
     runtime: python3.8
@@ -59,7 +65,7 @@ functions:
           method: delete
           private: true
     environment:
-      TABLE_NAME: emotion_recognition_records
+      TABLE_NAME: ${self:custom.variables.TABLE_NAME}
 
   emotion:
     image:
@@ -76,14 +82,14 @@ functions:
           method: post
           private: true
     environment:
-      TABLE_NAME: emotion_recognition_records
+      TABLE_NAME: ${self:custom.variables.TABLE_NAME}
 
 resources:
   Resources:
     MyBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ucb-sis-image-bucket
+        BucketName: ${self:custom.variables.BUCKET_NAME}
         PublicAccessBlockConfiguration:
           BlockPublicAcls: false
         OwnershipControls:
@@ -92,7 +98,7 @@ resources:
     EmotionRecognitionTable:
         Type: AWS::DynamoDB::Table
         Properties:
-          TableName: emotion_recognition_records
+          TableName: ${self:custom.variables.TABLE_NAME}
           AttributeDefinitions:
             - AttributeName: id
               AttributeType: S
