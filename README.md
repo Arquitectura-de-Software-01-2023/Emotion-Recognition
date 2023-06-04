@@ -1,5 +1,5 @@
 # Emotion Recognition
-Este proyecto de arquitectura software utiliza AWS Serverless para implementar un servicio de reconocimiento de emociones. Permite subir imágenes, detectar emociones en las imágenes y gestionar los registros de emociones almacenados.
+Este proyecto de arquitectura de software utiliza AWS Serverless para implementar un servicio de reconocimiento de emociones. Permite subir imágenes, detectar emociones en las imágenes y gestionar los registros de emociones almacenados.
 
 ## Tabla de contenidos
 - [Requisitos previos](#requisitos-previos)
@@ -12,7 +12,7 @@ Este proyecto de arquitectura software utiliza AWS Serverless para implementar u
 Antes de comenzar, asegúrate de tener los siguientes requisitos previos configurados:
 
 - Una cuenta de AWS con permisos para crear y administrar los servicios necesarios.
-- AWS CLI (Command Line Interface) instalado y configurado en tu máquina local.
+- AWS CLI (Command Line Interface) instalado y configurado en tu máquina local. Para instalar y configurar AWS CLI en tu máquina local, sigue las instrucciones proporcionadas en la [documentación oficial de AWS](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
 - Serverless Framework instalado en tu máquina local. Puedes instalarlo siguiendo las instrucciones en [este enlace](https://www.serverless.com/framework/docs/getting-started/).
 - Node.js instalado en tu máquina local. Puedes descargarlo desde [el sitio oficial de Node.js](https://nodejs.org/es/) y seguir las instrucciones de instalación.
 - Docker instalado en tu máquina local. Puedes descargar Docker desde [el sitio oficial de Docker](https://www.docker.com/get-started) y seguir las instrucciones de instalación.
@@ -41,7 +41,7 @@ custom:
     BUCKET_NAME: ucb-sis-image-bucket
     TABLE_NAME: emotion_recognition_records
 ```
-Asegúrate de modificar los valores de estas variables según tus preferencias. Aquí tienes una breve descripción de cada una:
+Aquí tienes una breve descripción de cada una:
 - AWS_REGION: Elige la región de AWS en la que deseas desplegar el servicio.
 - BUCKET_NAME: Especifica el nombre del bucket de S3 donde se almacenarán las imágenes.
 - TABLE_NAME: Indica el nombre de la tabla de DynamoDB donde se registrarán las emociones detectadas.
@@ -63,13 +63,13 @@ El proyecto ofrece las siguientes funcionalidades:
   <img src="https://github.com/Arquitectura-de-Software-01-2023/Emotion-Recognition/assets/102682441/8f8fff56-e6af-40bb-9c33-cc6f6d595475" alt="Emotion Recognition Diagram">
 </p>
 
-
 ## Recursos
 El proyecto utiliza los siguientes recursos de AWS:
 - AWS Lambda: Se utilizan varias funciones Lambda para procesar las solicitudes y realizar el reconocimiento de emociones.
 - Amazon API Gateway: Se configura una API Gateway para exponer los endpoints de las funciones Lambda.
 - Amazon S3: Se crea un bucket de S3 para almacenar las imágenes subidas.
 - Amazon DynamoDB: Se crea una tabla de DynamoDB para almacenar los registros de emociones.
+- Amazon ECR (Amazon Elastic Container Registry): Se utiliza Amazon ECR para almacenar la imagen de Docker utilizada en el runtime de Python.
 
 ## Limpieza
 
