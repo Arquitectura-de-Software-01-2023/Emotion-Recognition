@@ -59,7 +59,10 @@ El proyecto ofrece las siguientes funcionalidades:
 - Obtención de emociones: La función get-emotion-handler permite obtener las emociones registradas en la tabla de DynamoDB especificada en la variable de entorno TABLE_NAME.
 - Eliminación de emociones: La función delete-emotion-handler permite eliminar las emociones registradas en la tabla de DynamoDB especificada en la variable de entorno TABLE_NAME.
 
-![Emotion Recognition Diagram](https://github.com/Arquitectura-de-Software-01-2023/Emotion-Recognition/assets/102682441/8f8fff56-e6af-40bb-9c33-cc6f6d595475)
+<p align="center">
+  <img src="https://github.com/Arquitectura-de-Software-01-2023/Emotion-Recognition/assets/102682441/8f8fff56-e6af-40bb-9c33-cc6f6d595475" alt="Emotion Recognition Diagram">
+</p>
+
 
 ## Recursos
 El proyecto utiliza los siguientes recursos de AWS:
